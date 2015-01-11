@@ -28,12 +28,12 @@ public class JoystickHandler {
 		for(JoystickButton button : buttons) {
 			if((button.getStick() == 1 && stick1.getRawButton(button.getID())) || (button.getStick() == 2 && stick2.getRawButton(button.getID()))) {
 				if(!button.isPressed()) {
-					button.getPress().run();
+					button.press();
 					button.setPressed(true);
 				}
 			}
 			else if(button.isPressed()) {
-				button.getRelease().run();
+				button.release();
 				button.setPressed(false);
 			}
 		}
@@ -63,12 +63,12 @@ public class JoystickHandler {
 			return id;
 		}
 		
-		public Runnable getPress() {
-			return press;
+		public void press() {
+			press.run();
 		}
 		
-		public Runnable getRelease() {
-			return release;
+		public void release() {
+			release.run();
 		}
 		
 		public boolean isPressed() {
