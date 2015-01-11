@@ -17,11 +17,17 @@ public class JoystickHandler {
 	}
 	
 	public void onButton(int stick, int id, Runnable press) {
-		onButton(stick, id, press, () -> {});
+		buttons.add(new JoystickButton(stick, id, press));
 	}
 	
 	public void onButton(int stick, int id, Runnable press, Runnable release) {
 		buttons.add(new JoystickButton(stick, id, press, release));
+	}
+	
+	public void reset() {
+		for(JoystickButton button : buttons) {
+			button.setPressed(false);
+		}
 	}
 	
 	public void update() {
@@ -53,6 +59,10 @@ public class JoystickHandler {
 			this.press = press;
 			this.release = release;
 			pressed = false;
+		}
+		
+		public JoystickButton(int stick, int id, Runnable press) {
+			this(stick, id, press, () -> {});
 		}
 		
 		public int getStick() {
