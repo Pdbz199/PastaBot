@@ -8,35 +8,51 @@ public class JoystickHandler {
 	
 	private Joystick stick1;
 	private Joystick stick2;
-	private ArrayList<JoystickAction> actions;
+	private ArrayList<JoystickButton> buttons;
 	
 	public JoystickHandler(Joystick stick1, Joystick stick2) {
 		this.stick1 = stick1;
 		this.stick2 = stick2;
-		actions = new ArrayList<JoystickAction>();
+		actions = new ArrayList<JoystickButton>();
 	}
 	
-	public void onButton(int stick, int id, Runnable action) {
-		actions.add(new JoystickAction(stick, id, action));
+	public void onButton(int stick, int id, Runnable press) {
+		onButton(stick, id, press, () -> {});
+	}
+	
+	public void onButton(int stick, int id, Runnable press, Runnable release) {
+		buttons.add(new JoystickButton(stick, id, press, release));
 	}
 	
 	public void update() {
-		for(JoystickAction action : actions) {
-			if((action.getStick() == 1 && stick1.getRawButton(action.getID())) || (action.getStick() == 2 && stick2.getRawButton(action.getID()))) {
-				action.getAction().run();
+		for(JoystickButton button : buttons) {
+			if((button.getStick() == 1 && stick1.getRawButton(button.getID())) || (button.getStick() == 2 && stick2.getRawButton(button.getID()))) {
+				if(!button.isPressed()) {
+					button.getPress().run();
+					button.setPressed(true);
+				}
+			}
+			else if(button.isPressed()) {
+				button.getRelease().run();
+				button.setPressed(false);
 			}
 		}
 	}
 	
-	class JoystickAction {
+	class JoystickButton {
+		
 		int stick;
 		int id;
-		Runnable action;
+		Runnable press;
+		Runnable release;
+		boolean pressed;
 		
-		public JoystickAction(int stick, int id, Runnable action) {
+		public JoystickButton(int stick, int id, Runnable press, Runnable release) {
 			this.stick = stick;
 			this.id = id;
-			this.action = action;
+			this.press = press;
+			this.release = release;
+			pressed = false;
 		}
 		
 		public int getStick() {
@@ -47,8 +63,20 @@ public class JoystickHandler {
 			return id;
 		}
 		
-		public Runnable getAction() {
-			return action;
+		public Runnable getPress() {
+			return press;
+		}
+		
+		public Runnable getRelease() {
+			return release;
+		}
+		
+		public boolean isPressed() {
+			return pressed;
+		}
+		
+		public void setPressed(boolean pressed) {
+			this.pressed = pressed;
 		}
 	}
 }

@@ -32,6 +32,8 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
     	joystickHandler.onButton(1, 5, () -> {
     		System.out.println("button 5 pressed on joystick 1");
+    	}, () -> {
+	    	System.out.println("button 5 released on joystick 1");
     	});
     }
     
