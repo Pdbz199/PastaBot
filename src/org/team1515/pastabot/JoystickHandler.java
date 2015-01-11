@@ -13,7 +13,7 @@ public class JoystickHandler {
 	public JoystickHandler(Joystick stick1, Joystick stick2) {
 		this.stick1 = stick1;
 		this.stick2 = stick2;
-		actions = new ArrayList<JoystickButton>();
+		buttons = new ArrayList<JoystickButton>();
 	}
 	
 	public void onButton(int stick, int id, Runnable press) {
