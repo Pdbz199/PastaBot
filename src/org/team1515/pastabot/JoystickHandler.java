@@ -27,6 +27,7 @@ public class JoystickHandler {
 	public void reset() {
 		for(JoystickButton button : buttons) {
 			button.setPressed(false);
+			button.release();
 		}
 	}
 	
