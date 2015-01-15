@@ -1,8 +1,10 @@
 
 package org.team1515.pastabot;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Talon;
 
 
 public class Robot extends IterativeRobot {
@@ -11,7 +13,8 @@ public class Robot extends IterativeRobot {
 	Joystick stick1;
 	Joystick stick2;
 	
-	PistonTest piston;
+	Piston piston;
+	CANTalon testMotor;
 	
     public void robotInit() {
     	stick1 = new Joystick(0);
@@ -19,7 +22,9 @@ public class Robot extends IterativeRobot {
     	joystickHandler = new JoystickHandler(stick1, stick2);
     	assignJoystickEvents(joystickHandler);
     	
-    	piston = new PistonTest(0, 7);
+    	piston = new Piston(0, 7);
+    	
+    	testMotor = new CANTalon(0);
     }
 
     public void autonomousPeriodic() {
@@ -32,6 +37,7 @@ public class Robot extends IterativeRobot {
     
     public void teleopPeriodic() {
     	joystickHandler.update();
+    	testMotor.set(-stick1.getRawAxis(1));
     }
     
     public void assignJoystickEvents(JoystickHandler handler) {
@@ -39,10 +45,11 @@ public class Robot extends IterativeRobot {
     		piston.extend();
     		System.out.println("button 1 pressed on joystick 1");
     	}, () -> {
+    		piston.retract();
 	    	System.out.println("button 1 released on joystick 1");
     	});
+    	
     	handler.onButton(1, 2, () -> {
-    		piston.retract();
     		System.out.println("piston retracted");
     	});
     }

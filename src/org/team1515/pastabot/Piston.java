@@ -2,11 +2,11 @@ package org.team1515.pastabot;
 
 import edu.wpi.first.wpilibj.Solenoid;
 
-public class PistonTest {
+public class Piston {
     private Solenoid bottom;
     private Solenoid top;
     
-    public PistonTest(int bottomPort, int topPort){
+    public Piston(int bottomPort, int topPort){
         this.bottom = new Solenoid(0, bottomPort);
         this.top = new Solenoid(0, topPort);
     }
